@@ -24,7 +24,7 @@
 
 ## Description
 
-[NestJs Nuggets](https://www.youtube.com/playlist?list=PLBR2W-ptbnM0R69t_eBj-qpyXSfNcZQO0) Dive into Backend Brilliance.
+[NestJs Nuggets](https://www.youtube.com/watch?v=NhAQV6lpIu4&list=PLBR2W-ptbnM3lqfHNeNELrYEIL6kMc6cD) Deep Dive into Backend Brilliance.
 
 ## Installation
 
