@@ -19,7 +19,7 @@ import { Company } from './company/entities/company.entity';
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_NAME'),
         entities: [Company],
-        synchronize: true,
+        synchronize: false,
         autoLoadEntities: true,
       }),
       // dataSource receives the configured DataSourceOptions

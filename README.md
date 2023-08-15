@@ -57,6 +57,32 @@ $ yarn test:e2e
 # test coverage
 $ yarn test:cov
 ```
+## TypeORM Migrations
+### Generate Migration From Entity
+
+```bash
+yarn migration:generate <path>/<file_name>
+# for e.g. yarn migration:generate db/migrations/create_table_task_type
+```
+
+### Create New Migration
+
+```bash
+yarn migration:create <path>/<file_name>
+# for e.g. yarn migration:create db/migrations/create_table_donors
+```
+
+### Run Migration
+
+```bash
+yarn migration:run
+```
+
+### Rollback Migration
+
+```bash
+yarn migration:revert
+```
 
 ## Support
 
