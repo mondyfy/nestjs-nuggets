@@ -9,5 +9,5 @@ export class Company {
   companyName: string;
 
   @Column({ default: true })
-  isActive: boolean;
+  isActive?: boolean;
 }
