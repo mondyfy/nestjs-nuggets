@@ -10,7 +10,9 @@ import {
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('company')
 @Controller('company')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
@@ -21,11 +23,13 @@ export class CompanyController {
   }
 
   @Get()
+  @ApiBody({ type: [CreateCompanyDto] })
   findAll() {
     return this.companyService.findAll();
   }
 
   @Get(':id')
+  @ApiBody({ type: CreateCompanyDto })
   findOne(@Param('id') id: string) {
     return this.companyService.findOne(+id);
   }

@@ -9,8 +9,6 @@ import { Company } from './company/entities/company.entity';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      // Use useFactory, useClass, or useExisting
-      // to configure the DataSourceOptions.
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         host: configService.get('DATABASE_HOST'),
@@ -22,8 +20,6 @@ import { Company } from './company/entities/company.entity';
         synchronize: false,
         autoLoadEntities: true,
       }),
-      // dataSource receives the configured DataSourceOptions
-      // and returns a Promise<DataSource>.
       dataSourceFactory: async (options) => {
         const dataSource = await new DataSource(options).initialize();
         return dataSource;
