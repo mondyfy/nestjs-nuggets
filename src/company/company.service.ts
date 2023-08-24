@@ -4,6 +4,11 @@ import { UpdateCompanyDto } from './dto/update-company.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Company } from './entities/company.entity';
+import {
+  IPaginationOptions,
+  Pagination,
+  paginate,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class CompanyService {
@@ -11,6 +16,10 @@ export class CompanyService {
     @InjectRepository(Company)
     private companyRepository: Repository<Company>,
   ) {}
+
+  async paginate(options: IPaginationOptions): Promise<Pagination<Company>> {
+    return paginate<Company>(this.companyRepository, options);
+  }
 
   create(createCompanyDto: CreateCompanyDto) {
     return this.companyRepository.save(createCompanyDto);

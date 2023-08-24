@@ -6,11 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
+  DefaultValuePipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { Company } from './entities/company.entity';
 
 @ApiTags('company')
 @Controller('company')
@@ -23,13 +28,23 @@ export class CompanyController {
   }
 
   @Get()
-  @ApiBody({ type: [CreateCompanyDto] })
-  findAll() {
-    return this.companyService.findAll();
+  @ApiQuery({ name: 'page', type: Number, required: false })
+  @ApiQuery({ name: 'limit', type: Number, required: false })
+  @ApiResponse({ type: Pagination<Company> })
+  findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+  ): Promise<Pagination<Company>> {
+    limit = limit > 100 ? 100 : limit;
+    return this.companyService.paginate({
+      page,
+      limit,
+      route: 'http://localhost:4000/company',
+    });
   }
 
   @Get(':id')
-  @ApiBody({ type: CreateCompanyDto })
+  @ApiResponse({ type: CreateCompanyDto })
   findOne(@Param('id') id: string) {
     return this.companyService.findOne(+id);
   }
