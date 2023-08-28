@@ -14,4 +14,8 @@ export class Upload {
   @ApiProperty({ type: 'string' })
   @Column({ name: 'mime_type', type: 'varchar' })
   mimeType: string;
+
+  @ApiProperty({ type: 'string' })
+  @Column({ name: 'provider', type: 'varchar', nullable: true })
+  provider?: string;
 }

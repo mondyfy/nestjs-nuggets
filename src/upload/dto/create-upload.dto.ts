@@ -26,6 +26,9 @@ export class UploadInput {
 
   @ApiProperty({ type: 'string' })
   mimeType: string;
+
+  @ApiProperty({ type: 'string' })
+  provider: string;
 }
 
 export class UpdateUploadInput extends PartialType(UploadInput) {}
