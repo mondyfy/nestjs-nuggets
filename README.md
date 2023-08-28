@@ -62,14 +62,14 @@ $ yarn test:cov
 
 ```bash
 yarn migration:generate <path>/<file_name>
-# for e.g. yarn migration:generate db/migrations/create_table_task_type
+# for e.g. yarn migration:generate db/migrations/create_table_company
 ```
 
 ### Create New Migration
 
 ```bash
 yarn migration:create <path>/<file_name>
-# for e.g. yarn migration:create db/migrations/create_table_donors
+# for e.g. yarn migration:create db/migrations/create_table_company
 ```
 
 ### Run Migration
