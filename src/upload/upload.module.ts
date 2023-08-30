@@ -7,6 +7,7 @@ import { Upload } from './entities/upload.entity';
 import { NestjsFormDataModule } from 'nestjs-form-data';
 import { CloudinaryProvider } from './providers/cloudinary.provider';
 import { CloudinaryService } from './services/cloudinary.service';
+import { S3Service } from './services/s3.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Upload]), NestjsFormDataModule],
@@ -16,6 +17,7 @@ import { CloudinaryService } from './services/cloudinary.service';
     Web3UploadService,
     CloudinaryService,
     CloudinaryProvider,
+    S3Service,
   ],
 })
 export class UploadModule {}

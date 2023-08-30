@@ -15,12 +15,14 @@ import { FormDataRequest } from 'nestjs-form-data';
 import { Web3UploadService } from './services/web3_upload.service';
 import { Upload } from './entities/upload.entity';
 import { CloudinaryService } from './services/cloudinary.service';
+import { S3Service } from './services/s3.service';
 
 @ApiTags('upload')
 @Controller('upload')
 @FormDataRequest()
 export class UploadController {
   constructor(
+    private readonly s3Service: S3Service,
     private readonly uploadService: UploadService,
     private readonly cloudinaryService: CloudinaryService,
     private readonly web3UploadService: Web3UploadService,
@@ -63,6 +65,29 @@ export class UploadController {
         url,
         mimeType: file.busBoyMimeType,
         provider: 'cloudinary',
+      };
+
+      await this.uploadService.create(uploadInfo);
+      return uploadInfo;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  @Post('s3')
+  @ApiConsumes('multipart/form-data')
+  @ApiCreatedResponse({
+    description: 'The file has been uploaded successfully to s3',
+    type: Upload,
+  })
+  async uploadToS3(@Body() createUploadDto: CreateUploadDto) {
+    const { file } = createUploadDto;
+    try {
+      const url = await this.s3Service.uploadFile(file);
+      const uploadInfo: UploadInput = {
+        url,
+        mimeType: file.busBoyMimeType,
+        provider: 's3',
       };
 
       await this.uploadService.create(uploadInfo);
