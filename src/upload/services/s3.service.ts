@@ -1,37 +1,33 @@
 import { S3 } from 'aws-sdk';
-import { Injectable, Logger } from '@nestjs/common';
-
 import { ConfigService } from '@nestjs/config';
-const configService = new ConfigService();
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class S3Service {
   private awsService = null;
-  constructor() {
+  constructor(private readonly configService: ConfigService) {
     this.awsService = new S3({
-      accessKeyId: configService.get('AWS_S3_ACCESS_KEY_ID'),
-      secretAccessKey: configService.get('AWS_S3_SECRET_ACCESS_KEY'),
+      accessKeyId: this.configService.get('AWS_S3_ACCESS_KEY_ID'),
+      secretAccessKey: this.configService.get('AWS_S3_SECRET_ACCESS_KEY'),
     });
   }
 
   public async uploadFile(file: any, filename?: string) {
     Logger.log(
-      `Uploading file to s3 bucket: ${configService.get('AWS_S3_BUCKET_NAME')}`,
+      `Uploading file to s3 bucket: ${this.configService.get(
+        'AWS_S3_BUCKET_NAME',
+      )}`,
     );
     try {
-      const ext = file.originalName
-        ? file.originalName.split('.')[1]
-        : file.originalname.split('.')[1];
-      const originalFIleName = file.originalName
-        ? file.originalName.split('.')[0]
-        : file.originalname.split('.')[0];
+      const [originalFileName, ext] = file.originalName.split('.') ?? [];
+      const filenNameWithoutSpace = originalFileName.replaceAll(' ', '');
 
       const fileName = filename
-        ? filename + originalFIleName + '.' + ext
-        : originalFIleName + `_${new Date().getTime()}.${ext}`;
+        ? filename + filenNameWithoutSpace + '.' + ext
+        : filenNameWithoutSpace + `_${new Date().getTime()}.${ext}`;
 
       const params = {
-        Bucket: configService.get('AWS_S3_BUCKET_NAME'),
+        Bucket: this.configService.get('AWS_S3_BUCKET_NAME'),
         Key: fileName,
         Body: file.buffer,
         ContentType: file.mimetype,
@@ -58,7 +54,7 @@ export class S3Service {
     const res: any = await new Promise((resolve, reject) => {
       this.awsService.deleteObject(
         {
-          Bucket: configService.get('AWS_S3_BUCKET'),
+          Bucket: this.configService.get('AWS_S3_BUCKET_NAME'),
           Key,
         },
         (err, data) => {

@@ -4,10 +4,13 @@ import { UpdateUploadDto } from '../dto/update-upload.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Upload } from '../entities/upload.entity';
+import { S3Service } from './s3.service';
 
 @Injectable()
 export class UploadService {
   constructor(
+    private readonly s3Service: S3Service,
+
     @InjectRepository(Upload)
     private repo: Repository<Upload>,
   ) {}
@@ -38,6 +41,9 @@ export class UploadService {
 
   async remove(id: number) {
     const exists = await this.findOne(id);
+    if (exists?.url && exists.provider === 's3') {
+      await this.s3Service.deleteFile(exists.url);
+    }
     if (!exists) {
       return new NotFoundException('File not found.');
     }
