@@ -38,6 +38,7 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/schedule": "^3.0.3",
     "@nestjs/swagger": "^7.1.8",
     "@nestjs/typeorm": "^10.0.0",
     "aws-sdk": "^2.1447.0",
