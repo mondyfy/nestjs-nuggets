@@ -4,6 +4,8 @@ import { Web3Storage, File } from 'web3.storage';
 
 @Injectable()
 export class Web3UploadService {
+  private readonly logger = new Logger(Web3UploadService.name);
+
   constructor(private readonly configService: ConfigService) {}
 
   makeStorageClient() {
@@ -20,7 +22,7 @@ export class Web3UploadService {
   async storeFiles(file: any) {
     const client = this.makeStorageClient();
     const cid = await client.put(file);
-    Logger.log('stored files with cid:', cid);
+    this.logger.log('stored files with cid:', cid);
     return cid;
   }
 

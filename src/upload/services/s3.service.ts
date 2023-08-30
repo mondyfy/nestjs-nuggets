@@ -5,6 +5,7 @@ import { Injectable, Logger } from '@nestjs/common';
 @Injectable()
 export class S3Service {
   private awsService = null;
+  private readonly logger = new Logger(S3Service.name);
   constructor(private readonly configService: ConfigService) {
     this.awsService = new S3({
       accessKeyId: this.configService.get('AWS_S3_ACCESS_KEY_ID'),
@@ -13,7 +14,7 @@ export class S3Service {
   }
 
   public async uploadFile(file: any, filename?: string) {
-    Logger.log(
+    this.logger.log(
       `Uploading file to s3 bucket: ${this.configService.get(
         'AWS_S3_BUCKET_NAME',
       )}`,
@@ -47,7 +48,7 @@ export class S3Service {
   }
 
   public async deleteFile(fileUrl: string) {
-    Logger.debug(`Deleting file: ${fileUrl} from s3`);
+    this.logger.debug(`Deleting file: ${fileUrl} from s3`);
     const words = fileUrl.split('/');
     const Key = words[words.length - 1];
 
@@ -70,7 +71,7 @@ export class S3Service {
   }
 
   public async updateFile(fileUrl: string, file: any) {
-    Logger.debug(`Updating file: ${fileUrl} in s3`);
+    this.logger.debug(`Updating file: ${fileUrl} in s3`);
 
     if (fileUrl && fileUrl.length > 2) {
       await this.deleteFile(fileUrl);
